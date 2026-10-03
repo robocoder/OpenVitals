@@ -43,12 +43,12 @@ Heart and vitals:
 - Basal body temperature.
 - Blood glucose.
 - VO2 max.
+- Blood pressure: systolic (mmHg), diastolic (mmHg), body position and cuff position.
 
-Every supported measurement is a single value at a single instant, because that is the shape the column mapping expresses: one row, one timestamp, one number per column.
+Every supported measurement is a single value at a single instant: one row, one timestamp, one number per column. Blood pressure is the exception: the systolic and diastolic columns of a row become one Health Connect record, so both must be mapped. The optional body position (seated, standing, lying down, reclined) and cuff position (left wrist, right wrist, left arm, right arm) columns are matched fuzzily: case, whitespace and punctuation are ignored and common synonyms such as "sitting" for "seated" are accepted. A blank position cell is stored as unknown; a word that matches nothing rejects that row's reading.
 
 ## What Is Not Supported
 
-- **Blood pressure is deliberately unsupported.** Systolic and diastolic have to become one Health Connect record, which needs a two-columns-to-one-record rule the mapping model does not have.
 - **Interval records are not supported.** Steps, sleep, and workouts need a start and an end, and often sub-records, so they are out of scope for the current mapping model.
 
 ## Units Come From The File

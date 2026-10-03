@@ -28,6 +28,9 @@ enum class CsvImportDiagnosticReason {
     /** The end is not after the start, usually TimeFrom and TimeTo swapped. Interval metrics only. */
     END_NOT_AFTER_START,
 
+    /** A word cell (body or cuff position) matches none of the known options. */
+    UNRECOGNIZED_VALUE,
+
     /** Health Connect refused the record. */
     WRITE_FAILED,
 }

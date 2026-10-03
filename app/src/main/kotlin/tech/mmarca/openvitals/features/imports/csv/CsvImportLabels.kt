@@ -26,6 +26,10 @@ internal fun csvMetricLabel(metric: CsvImportMetric): String = stringResource(
         CsvImportMetric.BLOOD_GLUCOSE -> R.string.settings_csv_import_metric_blood_glucose
         CsvImportMetric.VO2_MAX -> R.string.settings_csv_import_metric_vo2_max
         CsvImportMetric.STEPS -> R.string.settings_csv_import_metric_steps
+        CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC -> R.string.settings_csv_import_metric_bp_systolic
+        CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC -> R.string.settings_csv_import_metric_bp_diastolic
+        CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION -> R.string.settings_csv_import_metric_bp_body_position
+        CsvImportMetric.BLOOD_PRESSURE_CUFF_POSITION -> R.string.settings_csv_import_metric_bp_cuff_position
     },
 )
 
@@ -54,6 +58,7 @@ internal fun csvUnitLabel(unit: CsvUnit): String = stringResource(
         CsvUnit.MILLIGRAMS_PER_DECILITER -> R.string.settings_csv_import_unit_milligrams_per_deciliter
         CsvUnit.MILLILITERS_PER_KG_PER_MINUTE -> R.string.settings_csv_import_unit_milliliters_per_kg_per_minute
         CsvUnit.COUNT -> R.string.settings_csv_import_unit_count
+        CsvUnit.MILLIMETERS_OF_MERCURY -> R.string.settings_csv_import_unit_mmhg
     },
 )
 
@@ -62,6 +67,7 @@ internal fun csvUnitLabel(unit: CsvUnit): String = stringResource(
 internal fun csvInterpretationLabel(interpretation: CsvValueInterpretation): String =
     when (interpretation) {
         is CsvDirectValue -> csvUnitLabel(interpretation.unit)
+        is CsvTextValue -> stringResource(R.string.settings_csv_import_interpretation_text)
         is CsvMassShareOfWeight -> stringResource(
             R.string.settings_csv_import_interpretation_mass_share,
             csvUnitLabel(interpretation.unit),
@@ -112,6 +118,7 @@ internal fun csvIssueLabel(issue: CsvMappingIssue): String = stringResource(
         CsvMappingIssue.TIMESTAMP_FORMAT_MATCHES_NO_SAMPLE_ROW -> R.string.settings_csv_import_issue_timestamp_unparsed
         CsvMappingIssue.AMBIGUOUS_DAY_MONTH_ORDER -> R.string.settings_csv_import_date_format_ambiguous
         CsvMappingIssue.MULTIPLE_END_TIMESTAMP_COLUMNS -> R.string.settings_csv_import_issue_multiple_end_timestamps
+        CsvMappingIssue.BLOOD_PRESSURE_NEEDS_SYSTOLIC_AND_DIASTOLIC -> R.string.settings_csv_import_issue_bp_needs_both
     },
 )
 
@@ -126,6 +133,7 @@ internal fun csvDiagnosticReasonLabel(reason: CsvImportDiagnosticReason): String
         CsvImportDiagnosticReason.DERIVATION_MISSING_WEIGHT -> R.string.settings_csv_import_reason_derivation_missing_weight
         CsvImportDiagnosticReason.UNPARSABLE_END_TIMESTAMP -> R.string.settings_csv_import_reason_unparsable_end_timestamp
         CsvImportDiagnosticReason.END_NOT_AFTER_START -> R.string.settings_csv_import_reason_end_not_after_start
+        CsvImportDiagnosticReason.UNRECOGNIZED_VALUE -> R.string.settings_csv_import_reason_unrecognized_value
         CsvImportDiagnosticReason.WRITE_FAILED -> R.string.settings_csv_import_reason_write_failed
     },
 )
