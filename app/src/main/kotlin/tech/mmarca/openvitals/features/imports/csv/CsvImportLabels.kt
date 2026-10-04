@@ -133,6 +133,7 @@ internal fun csvDiagnosticReasonLabel(reason: CsvImportDiagnosticReason): String
         CsvImportDiagnosticReason.DERIVATION_MISSING_WEIGHT -> R.string.settings_csv_import_reason_derivation_missing_weight
         CsvImportDiagnosticReason.UNPARSABLE_END_TIMESTAMP -> R.string.settings_csv_import_reason_unparsable_end_timestamp
         CsvImportDiagnosticReason.END_NOT_AFTER_START -> R.string.settings_csv_import_reason_end_not_after_start
+        CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC -> R.string.settings_csv_import_reason_systolic_not_above_diastolic
         CsvImportDiagnosticReason.UNRECOGNIZED_VALUE -> R.string.settings_csv_import_reason_unrecognized_value
         CsvImportDiagnosticReason.WRITE_FAILED -> R.string.settings_csv_import_reason_write_failed
     },

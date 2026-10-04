@@ -96,6 +96,58 @@ class CsvBloodPressureImportTest {
     }
 
     @Test
+    fun `systolic not above diastolic rejects the reading`() {
+        for ((systolic, diastolic) in listOf("80" to "80", "70" to "90")) {
+            val conversion = convertCsvRow(
+                bpRow("2026-07-01 08:12:00", systolic, diastolic, "seated", "left arm"),
+                bloodPressureMapping(),
+            )
+
+            assertTrue(conversion.records.isEmpty())
+            assertEquals(
+                CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC,
+                conversion.diagnostics.single().reason,
+            )
+        }
+    }
+
+    @Test
+    fun `a pulse column alongside blood pressure imports as heart rate`() {
+        val mapping = bloodPressureMapping().let {
+            it.copy(
+                columns = it.columns + CsvColumnMapping(
+                    5,
+                    CsvColumnRole.METRIC,
+                    CsvImportMetric.HEART_RATE,
+                    CsvDirectValue(CsvUnit.BEATS_PER_MINUTE),
+                ),
+            )
+        }
+
+        val withPulse = convertCsvRow(
+            bpRow("2026-07-01 08:12:00", "120", "80", "seated", "left arm", "64"),
+            mapping,
+        )
+        assertTrue(withPulse.diagnostics.isEmpty())
+        assertEquals(
+            setOf("BloodPressureRecord", "HeartRateRecord"),
+            withPulse.records.map { it.targetType }.toSet(),
+        )
+
+        val blankPulse = convertCsvRow(
+            bpRow("2026-07-01 08:12:00", "120", "80", "seated", "left arm", ""),
+            mapping,
+        )
+        assertEquals(listOf("BloodPressureRecord"), blankPulse.records.map { it.targetType })
+
+        val badReading = convertCsvRow(
+            bpRow("2026-07-01 08:12:00", "70", "90", "seated", "left arm", "64"),
+            mapping,
+        )
+        assertEquals(listOf("HeartRateRecord"), badReading.records.map { it.targetType })
+    }
+
+    @Test
     fun `preview reads systolic and diastolic separately`() {
         val rows = listOf(listOf("2026-07-01 08:12:00", "120", "80", "seated", "left arm"))
         val mapping = bloodPressureMapping()

@@ -275,6 +275,15 @@ private fun convertCsvBloodPressure(
     }
 
     if (!valid || systolic == null || diastolic == null) return
+    if (systolic <= diastolic) {
+        diagnostics += CsvImportDiagnostic(
+            rowNumber = row.rowNumber,
+            reason = CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC,
+            columnIndex = systolicColumn.columnIndex,
+            detail = String.format(Locale.US, "%.0f/%.0f", systolic, diastolic),
+        )
+        return
+    }
     records += buildCsvBloodPressureRecord(systolic, diastolic, bodyPosition, cuffPosition, instant)
 }
 
