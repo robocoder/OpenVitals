@@ -45,7 +45,7 @@ Heart and vitals:
 - VO2 max.
 - Blood pressure: systolic (mmHg), diastolic (mmHg), body position and cuff position.
 
-Every supported measurement is a single value at a single instant: one row, one timestamp, one number per column. Blood pressure is the exception: the systolic and diastolic columns of a row become one Health Connect record, so both must be mapped. The optional body position (seated, standing, lying down, reclined) and cuff position (left wrist, right wrist, left arm, right arm) columns are matched fuzzily: case, whitespace and punctuation are ignored and common synonyms such as "sitting" for "seated" are accepted. A blank position cell is stored as unknown; a word that matches nothing rejects that row's reading.
+Every supported measurement is a single value at a single instant: one row, one timestamp, one number per column. Blood pressure is the exception: the systolic and diastolic columns of a row become one Health Connect record, so both must be mapped. A row with both pressure cells blank is skipped silently; a row with only one of them filled, or with systolic not above diastolic, is rejected. The optional body position and cuff position columns hold the language-independent codes OpenVitals itself uses, not words, so the file does not depend on a language. Body position: 1 standing, 2 seated, 3 lying down, 4 reclined. Cuff position: 1 left wrist, 2 right wrist, 3 left arm, 4 right arm. A blank cell or 0 is stored as unknown; any other value rejects that row's reading.
 
 ## What Is Not Supported
 

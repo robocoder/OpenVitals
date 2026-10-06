@@ -2077,7 +2077,7 @@
     <string name="settings_csv_import_unit_milliliters_per_kg_per_minute">mL/kg/min</string>
     <string name="settings_csv_import_unit_count">A count</string>
     <string name="settings_csv_import_unit_mmhg">Millimetres of mercury (mmHg)</string>
-    <string name="settings_csv_import_interpretation_text">Words, matched to the closest option</string>
+    <string name="settings_csv_import_interpretation_text">A code, not a word (see the import guide)</string>
     <string name="settings_csv_import_interpretation_mass_share">A mass in %1$s, as a share of the weight column</string>
     <string name="settings_csv_import_mass_share_hint">Health Connect stores body fat as a percentage, so this is worked out from the weight measured in the same row.</string>
     <string name="settings_csv_import_date_time_title">Date and time</string>
@@ -2129,6 +2129,7 @@
     <string name="settings_csv_import_reason_unparsable_number">Value not a number</string>
     <string name="settings_csv_import_reason_out_of_range">Value outside a plausible range</string>
     <string name="settings_csv_import_reason_derivation_missing_weight">No weight to work out the percentage from</string>
+    <string name="settings_csv_import_reason_missing_blood_pressure_value">Systolic or diastolic is missing</string>
     <string name="settings_csv_import_reason_systolic_not_above_diastolic">Systolic is not above diastolic</string>
     <string name="settings_csv_import_reason_unrecognized_value">Value not recognised</string>
     <string name="settings_csv_import_reason_write_failed">Health Connect refused the record</string>

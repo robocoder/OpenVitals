@@ -27,6 +27,7 @@ import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
 import androidx.health.connect.client.units.Power
 import androidx.health.connect.client.units.Pressure
+import tech.mmarca.openvitals.domain.model.BpRecordValues
 import androidx.health.connect.client.units.Temperature
 import java.security.MessageDigest
 import java.time.Duration
@@ -208,9 +209,10 @@ fun convertCsvRow(
 }
 
 /**
- * Reads the row's blood pressure columns as one reading. A blank systolic or
- * diastolic cell means no reading; a bad value costs the reading. Blank
- * position cells are "unknown"; an unrecognised word costs the reading.
+ * Reads the row's blood pressure columns as one reading. Both pressure cells
+ * blank means no reading and no error; only one blank costs the reading, as
+ * does a bad value. Blank position cells are "unknown"; a position cell that
+ * is not a BpRecordValues code costs the reading.
  */
 private fun convertCsvBloodPressure(
     row: CsvRow,
@@ -250,29 +252,32 @@ private fun convertCsvBloodPressure(
         return value
     }
 
+    // Neither pressure cell filled: the row has no reading, which is not an error.
+    val systolicBlank = row.cell(systolicColumn.columnIndex) == null
+    val diastolicBlank = row.cell(diastolicColumn.columnIndex) == null
+    if (systolicBlank && diastolicBlank) return
+    if (systolicBlank != diastolicBlank) {
+        val missing = if (systolicBlank) systolicColumn else diastolicColumn
+        reject(CsvImportDiagnosticReason.MISSING_BLOOD_PRESSURE_VALUE, missing.columnIndex, null)
+        return
+    }
+
     val systolic = readPressure(systolicColumn)
     val diastolic = readPressure(diastolicColumn)
 
-    var bodyPosition = BloodPressureRecord.BODY_POSITION_UNKNOWN
-    columnFor(CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION)?.let { column ->
-        val text = row.cell(column.columnIndex) ?: return@let
-        val match = matchCsvBodyPosition(text)
-        if (match == null) {
+    // Position cells hold the BpRecordValues codes, which are the same in every language.
+    fun readCode(metric: CsvImportMetric, allowed: Set<Int>): Int {
+        val column = columnFor(metric) ?: return 0
+        val text = row.cell(column.columnIndex) ?: return 0
+        val code = text.toIntOrNull()
+        if (code == null || code !in allowed) {
             reject(CsvImportDiagnosticReason.UNRECOGNIZED_VALUE, column.columnIndex, text)
-        } else {
-            bodyPosition = match.healthConnectValue
+            return 0
         }
+        return code
     }
-    var cuffPosition = BloodPressureRecord.MEASUREMENT_LOCATION_UNKNOWN
-    columnFor(CsvImportMetric.BLOOD_PRESSURE_CUFF_POSITION)?.let { column ->
-        val text = row.cell(column.columnIndex) ?: return@let
-        val match = matchCsvCuffPosition(text)
-        if (match == null) {
-            reject(CsvImportDiagnosticReason.UNRECOGNIZED_VALUE, column.columnIndex, text)
-        } else {
-            cuffPosition = match.healthConnectValue
-        }
-    }
+    val bodyPosition = readCode(CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION, BodyPositionCodes)
+    val cuffPosition = readCode(CsvImportMetric.BLOOD_PRESSURE_CUFF_POSITION, MeasurementLocationCodes)
 
     if (!valid || systolic == null || diastolic == null) return
     if (systolic <= diastolic) {
@@ -286,6 +291,22 @@ private fun convertCsvBloodPressure(
     }
     records += buildCsvBloodPressureRecord(systolic, diastolic, bodyPosition, cuffPosition, instant)
 }
+
+private val BodyPositionCodes = setOf(
+    BpRecordValues.BODY_POSITION_UNKNOWN,
+    BpRecordValues.BODY_POSITION_STANDING_UP,
+    BpRecordValues.BODY_POSITION_SITTING_DOWN,
+    BpRecordValues.BODY_POSITION_LYING_DOWN,
+    BpRecordValues.BODY_POSITION_RECLINING,
+)
+
+private val MeasurementLocationCodes = setOf(
+    BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN,
+    BpRecordValues.MEASUREMENT_LOCATION_LEFT_WRIST,
+    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_WRIST,
+    BpRecordValues.MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_UPPER_ARM,
+)
 
 /** The blood pressure record for [instant], values in mmHg and positions as Health Connect constants. */
 fun buildCsvBloodPressureRecord(

@@ -211,6 +211,7 @@ private fun reasonLabel(reason: CsvImportDiagnosticReason): String = when (reaso
     CsvImportDiagnosticReason.DERIVATION_MISSING_WEIGHT -> "no weight to derive the percentage from"
     CsvImportDiagnosticReason.UNPARSABLE_END_TIMESTAMP -> "end date not understood"
     CsvImportDiagnosticReason.END_NOT_AFTER_START -> "end is not after the start"
+    CsvImportDiagnosticReason.MISSING_BLOOD_PRESSURE_VALUE -> "Systolic or diastolic missing"
     CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC -> "Systolic is not above diastolic"
     CsvImportDiagnosticReason.UNRECOGNIZED_VALUE -> "Value not recognised"
     CsvImportDiagnosticReason.WRITE_FAILED -> "Health Connect refused the record"
