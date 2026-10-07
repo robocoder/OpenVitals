@@ -118,6 +118,10 @@ private val CsvImportMetric.reportName: String
         CsvImportMetric.BLOOD_GLUCOSE -> "bloodGlucose"
         CsvImportMetric.VO2_MAX -> "vo2Max"
         CsvImportMetric.STEPS -> "steps"
+        CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC -> "bloodPressureSystolic"
+        CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC -> "bloodPressureDiastolic"
+        CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION -> "bloodPressureBodyPosition"
+        CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION -> "bloodPressureCuffLocation"
     }
 
 private val CsvUnit.reportName: String
@@ -144,6 +148,7 @@ private val CsvUnit.reportName: String
         CsvUnit.MILLIGRAMS_PER_DECILITER -> "milligramsPerDeciliter"
         CsvUnit.MILLILITERS_PER_KG_PER_MINUTE -> "millilitersPerKgPerMinute"
         CsvUnit.COUNT -> "count"
+        CsvUnit.MILLIMETERS_OF_MERCURY -> "millimetersOfMercury"
     }
 
 private fun outcomeLabel(outcome: CsvImportOutcome): String = when (outcome) {
@@ -192,6 +197,7 @@ private fun roleLabel(column: CsvColumnMapping): String = when (column.role) {
 private fun interpretationLabel(interpretation: CsvValueInterpretation?): String =
     when (interpretation) {
         is CsvDirectValue -> interpretation.unit.reportName
+        is CsvCodeValue -> "code"
         is CsvMassShareOfWeight -> "${interpretation.unit.reportName} as a share of the weight column"
         null -> "default"
     }
@@ -205,5 +211,8 @@ private fun reasonLabel(reason: CsvImportDiagnosticReason): String = when (reaso
     CsvImportDiagnosticReason.DERIVATION_MISSING_WEIGHT -> "no weight to derive the percentage from"
     CsvImportDiagnosticReason.UNPARSABLE_END_TIMESTAMP -> "end date not understood"
     CsvImportDiagnosticReason.END_NOT_AFTER_START -> "end is not after the start"
+    CsvImportDiagnosticReason.MISSING_BLOOD_PRESSURE_VALUE -> "Systolic or diastolic missing"
+    CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC -> "Systolic is not above diastolic"
+    CsvImportDiagnosticReason.UNRECOGNIZED_VALUE -> "Value not recognised"
     CsvImportDiagnosticReason.WRITE_FAILED -> "Health Connect refused the record"
 }

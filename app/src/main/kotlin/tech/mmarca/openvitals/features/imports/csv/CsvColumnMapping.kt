@@ -95,6 +95,9 @@ enum class CsvMappingIssue {
     /** More than one column claims to be the interval end. */
     MULTIPLE_END_TIMESTAMP_COLUMNS,
 
+    /** Blood pressure columns are mapped without both a systolic and a diastolic one. */
+    BLOOD_PRESSURE_NEEDS_SYSTOLIC_AND_DIASTOLIC,
+
     /** Body fat is given as a mass but no weight column is mapped to divide by. */
     MASS_SHARE_NEEDS_WEIGHT_COLUMN,
 
@@ -130,6 +133,12 @@ fun validateCsvMapping(
             issues += CsvMappingIssue.DUPLICATE_METRIC
             break
         }
+    }
+
+    val pressures = listOf(CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC, CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC)
+
+    if (metricColumns.any { it.metric?.isBloodPressure == true } && !metricColumns.mapNotNull { it.metric }.containsAll(pressures)) {
+        issues += CsvMappingIssue.BLOOD_PRESSURE_NEEDS_SYSTOLIC_AND_DIASTOLIC
     }
 
     // Asked of the interpretation, not the metric: only a mass needs a weight column.

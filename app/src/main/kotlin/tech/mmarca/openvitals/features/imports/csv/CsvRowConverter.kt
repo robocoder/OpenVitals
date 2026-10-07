@@ -3,6 +3,7 @@ package tech.mmarca.openvitals.features.imports.csv
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
 import androidx.health.connect.client.records.BasalMetabolicRateRecord
 import androidx.health.connect.client.records.BloodGlucoseRecord
+import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.BodyFatRecord
 import androidx.health.connect.client.records.BodyTemperatureRecord
 import androidx.health.connect.client.records.BodyWaterMassRecord
@@ -25,6 +26,7 @@ import androidx.health.connect.client.units.BloodGlucose
 import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
 import androidx.health.connect.client.units.Power
+import androidx.health.connect.client.units.Pressure
 import androidx.health.connect.client.units.Temperature
 import java.security.MessageDigest
 import java.time.Duration
@@ -32,6 +34,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.util.Locale
 import kotlin.math.roundToLong
+import tech.mmarca.openvitals.domain.model.BpRecordValues
 
 /** One CSV row to the Health Connect records it represents. Pure: no I/O, no clock. */
 
@@ -123,6 +126,8 @@ fun convertCsvRow(
 
     for (column in metricColumns) {
         val metric = column.metric!!
+        // Blood pressure columns are read together, after this loop.
+        if (metric.isBloodPressure) continue
         val spec = CsvMetricCatalog[metric]
         val interpretation = column.effectiveInterpretation
         if (spec == null || interpretation == null) continue
@@ -164,6 +169,7 @@ fun convertCsvRow(
         }
 
         val canonical: Double = when (interpretation) {
+            is CsvCodeValue -> continue
             is CsvDirectValue -> convertCsvValueToCanonical(raw, interpretation.unit)
             is CsvMassShareOfWeight -> {
                 if (rowWeightKg == null || rowWeightKg <= 0) {
@@ -197,7 +203,144 @@ fun convertCsvRow(
         )
     }
 
+    convertCsvBloodPressure(row, mapping, instant, records, diagnostics)
+
     return CsvRowConversion(records = records, diagnostics = diagnostics)
+}
+
+/**
+ * Reads the row's blood pressure columns as one reading. Both pressure cells
+ * blank means no reading and no error; only one blank costs the reading, as
+ * does a bad value. Blank position cells are "unknown"; a position cell that
+ * is not a BpRecordValues code costs the reading.
+ */
+private fun convertCsvBloodPressure(
+    row: CsvRow,
+    mapping: CsvImportMapping,
+    instant: CsvInstant,
+    records: MutableList<CsvConvertedRecord>,
+    diagnostics: MutableList<CsvImportDiagnostic>,
+) {
+    fun columnFor(metric: CsvImportMetric) = mapping.metricColumns.firstOrNull { it.metric == metric }
+    val systolicColumn = columnFor(CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC) ?: return
+    val diastolicColumn = columnFor(CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC) ?: return
+
+    var valid = true
+    fun reject(reason: CsvImportDiagnosticReason, columnIndex: Int, detail: String?) {
+        valid = false
+        diagnostics += CsvImportDiagnostic(row.rowNumber, reason, columnIndex, detail)
+    }
+
+    fun readPressure(column: CsvColumnMapping): Double? {
+        val text = row.cell(column.columnIndex) ?: return null
+        val raw = parseCsvNumber(text)
+        if (raw == null) {
+            reject(CsvImportDiagnosticReason.UNPARSABLE_NUMBER, column.columnIndex, text)
+            return null
+        }
+
+        val unit = (column.effectiveInterpretation as? CsvDirectValue)?.unit ?: CsvUnit.MILLIMETERS_OF_MERCURY
+        val value = convertCsvValueToCanonical(raw, unit)
+        val spec = CsvMetricCatalog.getValue(column.metric!!)
+        if (value < spec.plausibleMin || value > spec.plausibleMax) {
+            reject(
+                CsvImportDiagnosticReason.OUT_OF_RANGE,
+                column.columnIndex,
+                String.format(Locale.US, "%.2f", value),
+            )
+            return null
+        }
+        return value
+    }
+
+    val systolicBlank = row.cell(systolicColumn.columnIndex) == null
+    val diastolicBlank = row.cell(diastolicColumn.columnIndex) == null
+
+    // Neither pressure cell filled: the row has no reading, which is not an error.
+    if (systolicBlank && diastolicBlank) return
+
+    // One of the pressure cells has no reading
+    if (systolicBlank != diastolicBlank) {
+        val missing = if (systolicBlank) systolicColumn else diastolicColumn
+        reject(CsvImportDiagnosticReason.MISSING_BLOOD_PRESSURE_VALUE, missing.columnIndex, null)
+        return
+    }
+
+    val systolic = readPressure(systolicColumn)
+    val diastolic = readPressure(diastolicColumn)
+
+    // Position cells hold the BpRecordValues codes, which are the same in every language.
+    fun readCode(metric: CsvImportMetric, allowed: Set<Int>): Int {
+        val column = columnFor(metric) ?: return 0
+        val text = row.cell(column.columnIndex) ?: return 0
+        val code = text.toIntOrNull()
+        if (code == null || code !in allowed) {
+            reject(CsvImportDiagnosticReason.UNRECOGNIZED_VALUE, column.columnIndex, text)
+            return 0
+        }
+        return code
+    }
+
+    val bodyPosition = readCode(CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION, BodyPositionCodes)
+    val cuffLocation = readCode(CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION, MeasurementLocationCodes)
+
+    if (!valid || systolic == null || diastolic == null) return
+    if (systolic <= diastolic) {
+        diagnostics += CsvImportDiagnostic(
+            rowNumber = row.rowNumber,
+            reason = CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC,
+            columnIndex = systolicColumn.columnIndex,
+            detail = String.format(Locale.US, "%.0f/%.0f", systolic, diastolic),
+        )
+        return
+    }
+
+    records += buildCsvBloodPressureRecord(systolic, diastolic, bodyPosition, cuffLocation, instant)
+}
+
+private val BodyPositionCodes = setOf(
+    BpRecordValues.BODY_POSITION_UNKNOWN,
+    BpRecordValues.BODY_POSITION_STANDING_UP,
+    BpRecordValues.BODY_POSITION_SITTING_DOWN,
+    BpRecordValues.BODY_POSITION_LYING_DOWN,
+    BpRecordValues.BODY_POSITION_RECLINING,
+)
+
+private val MeasurementLocationCodes = setOf(
+    BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN,
+    BpRecordValues.MEASUREMENT_LOCATION_LEFT_WRIST,
+    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_WRIST,
+    BpRecordValues.MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
+    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_UPPER_ARM,
+)
+
+/** The blood pressure record for [instant], values in mmHg and positions as Health Connect constants. */
+fun buildCsvBloodPressureRecord(
+    systolic: Double,
+    diastolic: Double,
+    bodyPosition: Int,
+    measurementLocation: Int,
+    instant: CsvInstant,
+): CsvConvertedRecord {
+    val spec = CsvMetricCatalog.getValue(CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC)
+    val clientRecordId = buildCsvClientRecordId(targetType = spec.targetType, utc = instant.utc)
+    return CsvConvertedRecord(
+        metric = CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC,
+        targetType = spec.targetType,
+        recordType = spec.recordType,
+        clientRecordId = clientRecordId,
+        instant = instant.utc,
+        canonicalValue = systolic,
+        record = BloodPressureRecord(
+            time = instant.utc,
+            zoneOffset = instant.offset,
+            systolic = Pressure.millimetersOfMercury(systolic),
+            diastolic = Pressure.millimetersOfMercury(diastolic),
+            bodyPosition = bodyPosition,
+            measurementLocation = measurementLocation,
+            metadata = csvMetadata(clientRecordId),
+        ),
+    )
 }
 
 /** The row's body weight in kg, or null. */
@@ -313,6 +456,11 @@ fun buildCsvImportRecord(
                 metadata = metadata,
             )
         }
+        CsvImportMetric.BLOOD_PRESSURE_SYSTOLIC,
+        CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC,
+        CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION,
+        CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION,
+        -> error("Blood pressure is built by buildCsvBloodPressureRecord.")
     }
 
     return CsvConvertedRecord(
@@ -383,6 +531,11 @@ fun previewCanonicalValues(
     metric: CsvImportMetric,
 ): List<Double> {
     val targetType = CsvMetricCatalog[metric]?.targetType ?: return emptyList()
+    if (metric == CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION ||
+        metric == CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION
+    ) {
+        return emptyList()
+    }
 
     val values = mutableListOf<Double>()
     rows.forEachIndexed { index, fields ->
@@ -393,7 +546,13 @@ fun previewCanonicalValues(
         )
         conversion.records
             .filter { it.targetType == targetType }
-            .forEach { values += it.canonicalValue }
+            .forEach {
+                values += if (metric == CsvImportMetric.BLOOD_PRESSURE_DIASTOLIC) {
+                    (it.record as BloodPressureRecord).diastolic.inMillimetersOfMercury
+                } else {
+                    it.canonicalValue
+                }
+            }
     }
     return values
 }
