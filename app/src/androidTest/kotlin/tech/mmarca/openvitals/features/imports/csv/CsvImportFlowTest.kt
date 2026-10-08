@@ -28,6 +28,7 @@ import tech.mmarca.openvitals.R
 import tech.mmarca.openvitals.core.performance.AppForegroundGate
 import tech.mmarca.openvitals.core.performance.DefaultDispatcherProvider
 import tech.mmarca.openvitals.data.repository.AppleHealthImportRepository
+import tech.mmarca.openvitals.data.repository.CsvImportPreferencesRepository
 import tech.mmarca.openvitals.data.repository.PreferencesRepository
 import tech.mmarca.openvitals.data.repository.contract.HealthRepository
 import tech.mmarca.openvitals.healthconnect.HealthConnectManager
@@ -270,6 +271,8 @@ class CsvImportFlowTest {
                 AppleHealthImportRepository(hc = manager, dispatchers = DefaultDispatcherProvider),
             ),
             healthRepository = NothingGrantedHealthRepository,
+            preferences = CsvImportPreferencesRepository(context),
+            labelSource = CsvBloodPressureLabelSource(context),
             healthConnectManager = manager,
         )
     }

@@ -2362,10 +2362,10 @@
     <string name="settings_csv_import_metric_blood_glucose">Blood glucose</string>
     <string name="settings_csv_import_metric_vo2_max">VO₂ max</string>
     <string name="settings_csv_import_metric_steps">Steps</string>
-    <string name="settings_csv_import_metric_bp_systolic">Blood pressure: systolic (mmHg)</string>
-    <string name="settings_csv_import_metric_bp_diastolic">Blood pressure: diastolic (mmHg)</string>
-    <string name="settings_csv_import_metric_bp_body_position">Blood pressure: body position</string>
-    <string name="settings_csv_import_metric_bp_cuff_location">Blood pressure: cuff location</string>
+    <string name="settings_csv_import_metric_bp_systolic">Systolic</string>
+    <string name="settings_csv_import_metric_bp_diastolic">Diastolic</string>
+    <string name="settings_csv_import_metric_bp_body_position">Body Position</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">Cuff Location</string>
     <string name="settings_csv_import_value_label">Values are</string>
     <string name="settings_csv_import_unit_kilograms">Kilograms (kg)</string>
     <string name="settings_csv_import_unit_pounds">Pounds (lb)</string>

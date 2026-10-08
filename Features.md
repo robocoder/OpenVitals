@@ -396,7 +396,7 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - Choose the column separator and whether the first row holds column names, both detected and both overridable.
 - Map each column to nothing, to the date and time, or to one of the supported measurements.
 - Import weight, body fat, lean body mass, bone mass, body water, height, basal metabolic rate, heart rate, resting heart rate, heart rate variability, blood oxygen, respiratory rate, body temperature, basal body temperature, blood glucose, VO2 max, and blood pressure.
-- Import blood pressure from systolic and diastolic columns with optional body position and cuff location columns. Skip a row when both pressures blank. Reject a row when only one pressure present, or systolic not above diastolic.
+- Import blood pressure from systolic and diastolic columns with optional body position and cuff location columns, matched by their localized labels (app language first, then English; case and whitespace ignored). Choose a default body position and cuff location, saved between imports, for unmapped columns and unmatched values. Skip a row when both pressures blank. Reject a row when only one pressure present, or systolic not above diastolic.
 - Choose the unit of each column, which describes the file rather than the app's display unit system.
 - Read a body-fat column given as a mass, converting it to a percentage using the weight in the same row.
 - Choose the date format, or detect it from the data, and pick which of day-first and month-first the file uses when both fit.

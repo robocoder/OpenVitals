@@ -1,5 +1,7 @@
 package tech.mmarca.openvitals.features.imports.csv
 
+import tech.mmarca.openvitals.domain.model.BpRecordValues
+
 /** What the user decided each column means, and whether that is usable. Pure values. */
 
 /** What a column is used for. */
@@ -44,6 +46,12 @@ data class CsvColumnMapping(
 data class CsvImportMapping(
     val columns: List<CsvColumnMapping>,
     val dateTime: CsvDateTimeSettings = CsvDateTimeSettings(),
+    /** Read for the body position and cuff location cells. */
+    val bloodPressureLabels: CsvBloodPressureLabels = CsvBloodPressureLabels(),
+    /** Used when the body position column is not imported or its cell matches no label. */
+    val defaultBodyPosition: Int = BpRecordValues.BODY_POSITION_UNKNOWN,
+    /** Used when the cuff location column is not imported or its cell matches no label. */
+    val defaultCuffLocation: Int = BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN,
 ) {
     /** Every column mapped to a metric, in column order. */
     val metricColumns: List<CsvColumnMapping> get() = columns.filter { it.isMetric }

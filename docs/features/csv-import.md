@@ -49,12 +49,14 @@ Every supported measurement is a single value at a single instant: one row, one 
 
 Blood pressure is the exception: the systolic and diastolic columns of a row become one Health Connect record, so both must be present. A row with both pressure cells blank is skipped silently; a row with only one of them filled, or with systolic not above diastolic, is rejected.
 
-The optional body position and cuff location columns use the following codes:
+The optional body position and cuff location columns hold text, matched against the localized labels the app shows for them (for example "Sitting", or "Istuen" in Finnish):
 
-- Body position: 1 standing, 2 seated, 3 lying down, 4 reclined.
-- Cuff location: 1 left wrist, 2 right wrist, 3 left arm, 4 right arm.
+- The app language's labels are tried first, then English when the app language is not English.
+- Matching ignores case, whitespace and punctuation.
+- Body position: standing, sitting, lying down, reclining.
+- Cuff location: left arm, right arm, left wrist, right wrist.
 
-A blank cell or 0 is stored as unknown; any other value rejects that row's reading.
+Two dropdowns at the bottom of the mapping screen choose the default body position and cuff location. The default is used when the column is not imported, or when it is imported and a cell is blank or matches no label; such a cell does not reject the reading. Both defaults start as "Not specified", are saved, and are reloaded each time the mapping screen is shown.
 
 ## What Is Not Supported
 

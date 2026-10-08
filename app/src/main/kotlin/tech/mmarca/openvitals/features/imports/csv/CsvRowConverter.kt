@@ -34,7 +34,6 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.util.Locale
 import kotlin.math.roundToLong
-import tech.mmarca.openvitals.domain.model.BpRecordValues
 
 /** One CSV row to the Health Connect records it represents. Pure: no I/O, no clock. */
 
@@ -211,8 +210,8 @@ fun convertCsvRow(
 /**
  * Reads the row's blood pressure columns as one reading. Both pressure cells
  * blank means no reading and no error; only one blank costs the reading, as
- * does a bad value. Blank position cells are "unknown"; a position cell that
- * is not a BpRecordValues code costs the reading.
+ * does a bad value. A position cell that is blank or matches no localised
+ * label takes the mapping's default.
  */
 private fun convertCsvBloodPressure(
     row: CsvRow,
@@ -269,20 +268,24 @@ private fun convertCsvBloodPressure(
     val systolic = readPressure(systolicColumn)
     val diastolic = readPressure(diastolicColumn)
 
-    // Position cells hold the BpRecordValues codes, which are the same in every language.
-    fun readCode(metric: CsvImportMetric, allowed: Set<Int>): Int {
-        val column = columnFor(metric) ?: return 0
-        val text = row.cell(column.columnIndex) ?: return 0
-        val code = text.toIntOrNull()
-        if (code == null || code !in allowed) {
-            reject(CsvImportDiagnosticReason.UNRECOGNIZED_VALUE, column.columnIndex, text)
-            return 0
-        }
-        return code
+    // A blank cell, or one that names no known label, takes the user's default.
+    fun readLabel(metric: CsvImportMetric, default: Int, match: (String) -> Int?): Int {
+        val column = columnFor(metric) ?: return default
+        val text = row.cell(column.columnIndex) ?: return default
+        return match(text) ?: default
     }
 
-    val bodyPosition = readCode(CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION, BodyPositionCodes)
-    val cuffLocation = readCode(CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION, MeasurementLocationCodes)
+    val labels = mapping.bloodPressureLabels
+    val bodyPosition = readLabel(
+        CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION,
+        mapping.defaultBodyPosition,
+        labels::bodyPosition,
+    )
+    val cuffLocation = readLabel(
+        CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION,
+        mapping.defaultCuffLocation,
+        labels::cuffLocation,
+    )
 
     if (!valid || systolic == null || diastolic == null) return
     if (systolic <= diastolic) {
@@ -297,22 +300,6 @@ private fun convertCsvBloodPressure(
 
     records += buildCsvBloodPressureRecord(systolic, diastolic, bodyPosition, cuffLocation, instant)
 }
-
-private val BodyPositionCodes = setOf(
-    BpRecordValues.BODY_POSITION_UNKNOWN,
-    BpRecordValues.BODY_POSITION_STANDING_UP,
-    BpRecordValues.BODY_POSITION_SITTING_DOWN,
-    BpRecordValues.BODY_POSITION_LYING_DOWN,
-    BpRecordValues.BODY_POSITION_RECLINING,
-)
-
-private val MeasurementLocationCodes = setOf(
-    BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN,
-    BpRecordValues.MEASUREMENT_LOCATION_LEFT_WRIST,
-    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_WRIST,
-    BpRecordValues.MEASUREMENT_LOCATION_LEFT_UPPER_ARM,
-    BpRecordValues.MEASUREMENT_LOCATION_RIGHT_UPPER_ARM,
-)
 
 /** The blood pressure record for [instant], values in mmHg and positions as Health Connect constants. */
 fun buildCsvBloodPressureRecord(
