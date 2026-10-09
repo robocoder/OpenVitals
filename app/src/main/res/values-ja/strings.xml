@@ -2337,6 +2337,10 @@
     <string name="settings_csv_import_unreadable_file">そのファイルを読み取れませんでした: %1$s</string>
     <string name="settings_csv_import_columns_title">列</string>
     <string name="settings_csv_import_bp_defaults_title">血圧のデフォルト値</string>
+    <string name="settings_csv_import_metric_bp_systolic">収縮期</string>
+    <string name="settings_csv_import_metric_bp_diastolic">拡張期</string>
+    <string name="settings_csv_import_metric_bp_body_position">体位</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">カフの位置</string>
     <string name="settings_csv_import_role_ignore">インポートしない</string>
     <string name="settings_csv_import_role_timestamp">日時</string>
     <string name="settings_csv_import_role_end_timestamp">終了日時</string>

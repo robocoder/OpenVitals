@@ -1990,6 +1990,10 @@
     <string name="settings_csv_import_unreadable_file">Tento soubor se nepodařilo přečíst: %1$s</string>
     <string name="settings_csv_import_columns_title">Sloupce</string>
     <string name="settings_csv_import_bp_defaults_title">Výchozí hodnoty krevního tlaku</string>
+    <string name="settings_csv_import_metric_bp_systolic">Systolický</string>
+    <string name="settings_csv_import_metric_bp_diastolic">Diastolický</string>
+    <string name="settings_csv_import_metric_bp_body_position">Poloha těla</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">Umístění manžety</string>
     <string name="settings_csv_import_role_ignore">Neimportovat</string>
     <string name="settings_csv_import_role_timestamp">Datum a čas</string>
     <string name="settings_csv_import_role_end_timestamp">Datum a čas konce</string>

@@ -2286,6 +2286,10 @@
     <string name="settings_csv_import_unreadable_file">Не удалось прочитать файл: %1$s</string>
     <string name="settings_csv_import_columns_title">Столбцы</string>
     <string name="settings_csv_import_bp_defaults_title">Значения артериального давления по умолчанию</string>
+    <string name="settings_csv_import_metric_bp_systolic">Систолическое</string>
+    <string name="settings_csv_import_metric_bp_diastolic">Диастолическое</string>
+    <string name="settings_csv_import_metric_bp_body_position">Положение тела</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">Расположение манжеты</string>
     <string name="settings_csv_import_role_ignore">Не импортируется</string>
     <string name="settings_csv_import_role_timestamp">Дата и время</string>
     <string name="settings_csv_import_role_end_timestamp">Дата и время окончания</string>
