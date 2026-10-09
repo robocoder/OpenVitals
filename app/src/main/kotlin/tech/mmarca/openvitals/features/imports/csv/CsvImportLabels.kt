@@ -67,7 +67,6 @@ internal fun csvUnitLabel(unit: CsvUnit): String = stringResource(
 internal fun csvInterpretationLabel(interpretation: CsvValueInterpretation): String =
     when (interpretation) {
         is CsvDirectValue -> csvUnitLabel(interpretation.unit)
-        is CsvCodeValue -> stringResource(R.string.settings_csv_import_interpretation_code)
         is CsvMassShareOfWeight -> stringResource(
             R.string.settings_csv_import_interpretation_mass_share,
             csvUnitLabel(interpretation.unit),
