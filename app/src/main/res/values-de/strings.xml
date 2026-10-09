@@ -2351,10 +2351,6 @@
     <string name="settings_csv_import_unreadable_file">Die Datei konnte nicht gelesen werden: %1$s</string>
     <string name="settings_csv_import_columns_title">Spalten</string>
     <string name="settings_csv_import_bp_defaults_title">Standardwerte für Blutdruck</string>
-    <string name="settings_csv_import_metric_bp_systolic">Systolisch</string>
-    <string name="settings_csv_import_metric_bp_diastolic">Diastolisch</string>
-    <string name="settings_csv_import_metric_bp_body_position">Körperhaltung</string>
-    <string name="settings_csv_import_metric_bp_cuff_location">Manschettenposition</string>
     <string name="settings_csv_import_role_ignore">Wird nicht importiert</string>
     <string name="settings_csv_import_role_timestamp">Datum und Uhrzeit</string>
     <string name="settings_csv_import_role_end_timestamp">Enddatum und -uhrzeit</string>
@@ -2375,6 +2371,11 @@
     <string name="settings_csv_import_metric_basal_body_temperature">Basaltemperatur</string>
     <string name="settings_csv_import_metric_blood_glucose">Blutzucker</string>
     <string name="settings_csv_import_metric_vo2_max">VO₂ max</string>
+    <string name="settings_csv_import_metric_steps">Schritte</string>
+    <string name="settings_csv_import_metric_bp_systolic">Systolisch</string>
+    <string name="settings_csv_import_metric_bp_diastolic">Diastolisch</string>
+    <string name="settings_csv_import_metric_bp_body_position">Körperhaltung</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">Manschettenposition</string>
     <string name="settings_csv_import_value_label">Werte sind</string>
     <string name="settings_csv_import_unit_kilograms">Kilogramm (kg)</string>
     <string name="settings_csv_import_unit_pounds">Pfund (lb)</string>
@@ -3118,7 +3119,6 @@
     <string name="activity_workout_share_failed">Workout-Datei konnte nicht geteilt werden.</string>
     <string name="settings_fit_import_folder_grant">Import-Berechtigungen erteilen</string>
     <string name="settings_fit_import_error">FIT-Import-Warnung: %1$s</string>
-    <string name="settings_csv_import_metric_steps">Schritte</string>
     <string name="settings_derived_metrics_reset_done">Metriken zurücksetzen. Neubrechung im Hintergrund aus Health Connect.</string>
     <string name="settings_derived_metrics_reset_failed">Metriken konnten nicht zurückgesetzt werden</string>
     <string name="activity_workout_export_description">Workout Metriken als Datei speichern. Die GPS Route ist nicht eingeschlossen.</string>

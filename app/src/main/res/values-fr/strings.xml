@@ -1990,10 +1990,6 @@
     <string name="settings_csv_import_unreadable_file">Impossible de lire ce fichier : %1$s</string>
     <string name="settings_csv_import_columns_title">Colonnes</string>
     <string name="settings_csv_import_bp_defaults_title">Valeurs par défaut de la tension artérielle</string>
-    <string name="settings_csv_import_metric_bp_systolic">Systolique</string>
-    <string name="settings_csv_import_metric_bp_diastolic">Diastolique</string>
-    <string name="settings_csv_import_metric_bp_body_position">Position du corps</string>
-    <string name="settings_csv_import_metric_bp_cuff_location">Emplacement du brassard</string>
     <string name="settings_csv_import_role_ignore">Non importée</string>
     <string name="settings_csv_import_role_timestamp">Date et heure</string>
     <string name="settings_csv_import_role_end_timestamp">Date et heure de fin</string>
@@ -2015,6 +2011,10 @@
     <string name="settings_csv_import_metric_blood_glucose">Glycémie</string>
     <string name="settings_csv_import_metric_vo2_max">VO₂ max</string>
     <string name="settings_csv_import_metric_steps">Pas</string>
+    <string name="settings_csv_import_metric_bp_systolic">Systolique</string>
+    <string name="settings_csv_import_metric_bp_diastolic">Diastolique</string>
+    <string name="settings_csv_import_metric_bp_body_position">Position du corps</string>
+    <string name="settings_csv_import_metric_bp_cuff_location">Emplacement du brassard</string>
     <string name="settings_csv_import_value_label">Les valeurs sont en</string>
     <string name="settings_csv_import_unit_kilograms">Kilogrammes (kg)</string>
     <string name="settings_csv_import_unit_pounds">Livres (lb)</string>
