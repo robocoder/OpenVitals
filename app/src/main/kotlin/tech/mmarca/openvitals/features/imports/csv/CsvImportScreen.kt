@@ -222,6 +222,14 @@ internal fun CsvMappingStep(
                 )
             }
             item {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = stringResource(R.string.settings_csv_import_preferences_title),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+                Spacer(Modifier.height(8.dp))
+            }
+            item {
                 CsvBloodPressureDefaults(
                     mapping = mapping,
                     onBodyPositionChange = viewModel::setDefaultBodyPosition,
@@ -262,7 +270,6 @@ private fun CsvBloodPressureDefaults(
     onBodyPositionChange: (Int) -> Unit,
     onCuffLocationChange: (Int) -> Unit,
 ) {
-    Spacer(Modifier.height(12.dp))
     OpenVitalsCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

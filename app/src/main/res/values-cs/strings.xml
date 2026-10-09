@@ -1989,7 +1989,6 @@
     <string name="settings_csv_import_empty_file">Tento soubor nemá žádné datové řádky.</string>
     <string name="settings_csv_import_unreadable_file">Tento soubor se nepodařilo přečíst: %1$s</string>
     <string name="settings_csv_import_columns_title">Sloupce</string>
-    <string name="settings_csv_import_bp_defaults_title">Výchozí hodnoty krevního tlaku</string>
     <string name="settings_csv_import_role_ignore">Neimportovat</string>
     <string name="settings_csv_import_role_timestamp">Datum a čas</string>
     <string name="settings_csv_import_role_end_timestamp">Datum a čas konce</string>

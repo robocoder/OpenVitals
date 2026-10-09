@@ -2373,7 +2373,6 @@
     <string name="settings_csv_import_empty_file">Selles failis pole andmeridu.</string>
     <string name="settings_csv_import_unreadable_file">Seda faili ei õnnestunud lugeda: %1$s</string>
     <string name="settings_csv_import_columns_title">Veerud</string>
-    <string name="settings_csv_import_bp_defaults_title">Vererõhu vaikeväärtused</string>
     <string name="settings_csv_import_role_ignore">Ei impordita</string>
     <string name="settings_csv_import_role_timestamp">Kuupäev ja kellaaeg</string>
     <string name="settings_csv_import_role_end_timestamp">Lõpukuupäev ja -kellaaeg</string>
