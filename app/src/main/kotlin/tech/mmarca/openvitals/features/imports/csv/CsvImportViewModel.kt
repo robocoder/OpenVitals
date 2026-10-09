@@ -70,8 +70,6 @@ class CsvImportViewModel @Inject constructor(
     private val preferences: CsvImportPreferencesRepository,
     private val labelSource: CsvBloodPressureLabelSource,
     private val healthRepository: HealthRepository,
-    private val preferences: CsvImportPreferencesRepository,
-    private val labelSource: CsvBloodPressureLabelSource,
     healthConnectManager: HealthConnectManager,
 ) : ViewModel() {
 

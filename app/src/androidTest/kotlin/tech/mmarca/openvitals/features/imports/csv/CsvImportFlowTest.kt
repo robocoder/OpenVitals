@@ -273,8 +273,6 @@ class CsvImportFlowTest {
             preferences = CsvImportPreferencesRepository(context),
             labelSource = CsvBloodPressureLabelSource(context),
             healthRepository = NothingGrantedHealthRepository,
-            preferences = CsvImportPreferencesRepository(context),
-            labelSource = CsvBloodPressureLabelSource(context),
             healthConnectManager = manager,
         )
     }

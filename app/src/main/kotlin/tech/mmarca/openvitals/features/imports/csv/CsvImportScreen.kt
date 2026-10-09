@@ -41,15 +41,13 @@ import tech.mmarca.openvitals.healthconnect.HealthConnectFeature
 import tech.mmarca.openvitals.R
 import tech.mmarca.openvitals.ui.components.ConfirmLeaveWhileImporting
 import tech.mmarca.openvitals.ui.components.OpenVitalsCard
-import tech.mmarca.openvitals.ui.components.OptionDropdown
-import tech.mmarca.openvitals.domain.model.BpRecordValues
 import tech.mmarca.openvitals.ui.components.OpenVitalsFilledButton
 import tech.mmarca.openvitals.ui.components.OpenVitalsOutlinedButton
 import tech.mmarca.openvitals.ui.components.OptionDropdown
 import tech.mmarca.openvitals.ui.components.PermissionCallout
+import tech.mmarca.openvitals.ui.components.rememberHealthConnectPermissionLauncher
 import tech.mmarca.openvitals.ui.components.StepBar
 import tech.mmarca.openvitals.ui.components.WithHealthConnectFeatureScreen
-import tech.mmarca.openvitals.ui.components.rememberHealthConnectPermissionLauncher
 
 private val CsvMimeTypes = arrayOf(
     "text/csv",

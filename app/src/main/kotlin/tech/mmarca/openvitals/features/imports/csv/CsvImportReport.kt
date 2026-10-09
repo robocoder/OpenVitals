@@ -197,7 +197,6 @@ private fun roleLabel(column: CsvColumnMapping): String = when (column.role) {
 private fun interpretationLabel(interpretation: CsvValueInterpretation?): String =
     when (interpretation) {
         is CsvDirectValue -> interpretation.unit.reportName
-        is CsvCodeValue -> "code"
         is CsvMassShareOfWeight -> "${interpretation.unit.reportName} as a share of the weight column"
         is CsvTextValue -> "text"
         null -> "default"
