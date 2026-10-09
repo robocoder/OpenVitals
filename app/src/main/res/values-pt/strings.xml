@@ -1868,6 +1868,7 @@
     <string name="settings_csv_import_empty_file">Este ficheiro não tem linhas de dados.</string>
     <string name="settings_csv_import_unreadable_file">Não foi possível ler esse ficheiro: %1$s</string>
     <string name="settings_csv_import_columns_title">Colunas</string>
+    <string name="settings_csv_import_bp_defaults_title">Valores predefinidos da pressão arterial</string>
     <string name="settings_csv_import_role_ignore">Não importada</string>
     <string name="settings_csv_import_role_timestamp">Data e hora</string>
     <string name="settings_csv_import_role_end_timestamp">Data e hora de fim</string>

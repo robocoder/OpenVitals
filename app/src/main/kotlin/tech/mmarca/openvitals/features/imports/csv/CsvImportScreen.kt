@@ -264,6 +264,11 @@ private fun CsvBloodPressureDefaults(
 ) {
     Column {
         Spacer(Modifier.height(12.dp))
+        Text(
+            text = stringResource(R.string.settings_csv_import_bp_defaults_title),
+            style = MaterialTheme.typography.titleSmall,
+        )
+        Spacer(Modifier.height(8.dp))
         OptionDropdown(
             label = stringResource(R.string.settings_csv_import_metric_bp_body_position),
             options = CsvBodyPositionLabelRes.keys.toList(),

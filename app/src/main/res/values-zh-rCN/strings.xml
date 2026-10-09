@@ -1985,6 +1985,7 @@
     <string name="settings_csv_import_empty_file">此文件无数据行。</string>
     <string name="settings_csv_import_unreadable_file">无法读取该文件：%1$s</string>
     <string name="settings_csv_import_columns_title">列</string>
+    <string name="settings_csv_import_bp_defaults_title">血压默认值</string>
     <string name="settings_csv_import_role_ignore">不导入</string>
     <string name="settings_csv_import_role_timestamp">日期和时间</string>
     <string name="settings_csv_import_role_end_timestamp">结束日期和时间</string>

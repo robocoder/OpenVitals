@@ -2350,6 +2350,7 @@
     <string name="settings_csv_import_empty_file">Diese Datei enthält keine Datenzeilen.</string>
     <string name="settings_csv_import_unreadable_file">Die Datei konnte nicht gelesen werden: %1$s</string>
     <string name="settings_csv_import_columns_title">Spalten</string>
+    <string name="settings_csv_import_bp_defaults_title">Standardwerte für Blutdruck</string>
     <string name="settings_csv_import_role_ignore">Wird nicht importiert</string>
     <string name="settings_csv_import_role_timestamp">Datum und Uhrzeit</string>
     <string name="settings_csv_import_role_end_timestamp">Enddatum und -uhrzeit</string>

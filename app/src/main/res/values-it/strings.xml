@@ -2385,6 +2385,7 @@
     <string name="settings_csv_import_empty_file">Questo file non ha righe di dati.</string>
     <string name="settings_csv_import_unreadable_file">Impossibile leggere il file: %1$s</string>
     <string name="settings_csv_import_columns_title">Colonne</string>
+    <string name="settings_csv_import_bp_defaults_title">Valori predefiniti della pressione sanguigna</string>
     <string name="settings_csv_import_role_ignore">Non importata</string>
     <string name="settings_csv_import_role_timestamp">Data e ora</string>
     <string name="settings_csv_import_role_end_timestamp">Data e ora di fine</string>

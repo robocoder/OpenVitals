@@ -2336,6 +2336,7 @@
     <string name="settings_csv_import_empty_file">このファイルにはデータ行がありません。</string>
     <string name="settings_csv_import_unreadable_file">そのファイルを読み取れませんでした: %1$s</string>
     <string name="settings_csv_import_columns_title">列</string>
+    <string name="settings_csv_import_bp_defaults_title">血圧のデフォルト値</string>
     <string name="settings_csv_import_role_ignore">インポートしない</string>
     <string name="settings_csv_import_role_timestamp">日時</string>
     <string name="settings_csv_import_role_end_timestamp">終了日時</string>

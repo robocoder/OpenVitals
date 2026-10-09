@@ -1989,6 +1989,7 @@
     <string name="settings_csv_import_empty_file">Ce fichier ne contient aucune ligne de données.</string>
     <string name="settings_csv_import_unreadable_file">Impossible de lire ce fichier : %1$s</string>
     <string name="settings_csv_import_columns_title">Colonnes</string>
+    <string name="settings_csv_import_bp_defaults_title">Valeurs par défaut de la tension artérielle</string>
     <string name="settings_csv_import_role_ignore">Non importée</string>
     <string name="settings_csv_import_role_timestamp">Date et heure</string>
     <string name="settings_csv_import_role_end_timestamp">Date et heure de fin</string>
