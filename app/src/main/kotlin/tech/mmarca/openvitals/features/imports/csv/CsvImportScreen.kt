@@ -262,30 +262,32 @@ private fun CsvBloodPressureDefaults(
     onBodyPositionChange: (Int) -> Unit,
     onCuffLocationChange: (Int) -> Unit,
 ) {
-    Column {
-        Spacer(Modifier.height(12.dp))
-        Text(
-            text = stringResource(R.string.settings_csv_import_bp_defaults_title),
-            style = MaterialTheme.typography.titleSmall,
-        )
-        Spacer(Modifier.height(8.dp))
-        OptionDropdown(
-            label = stringResource(R.string.settings_csv_import_metric_bp_body_position),
-            options = CsvBodyPositionLabelRes.keys.toList(),
-            selected = mapping.defaultBodyPosition.takeIf { it in CsvBodyPositionLabelRes },
-            optionText = { stringResource(CsvBodyPositionLabelRes.getValue(it)) },
-            enabled = true,
-            onSelect = { onBodyPositionChange(it ?: BpRecordValues.BODY_POSITION_UNKNOWN) },
-        )
-        Spacer(Modifier.height(8.dp))
-        OptionDropdown(
-            label = stringResource(R.string.settings_csv_import_metric_bp_cuff_location),
-            options = CsvCuffLocationLabelRes.keys.toList(),
-            selected = mapping.defaultCuffLocation.takeIf { it in CsvCuffLocationLabelRes },
-            optionText = { stringResource(CsvCuffLocationLabelRes.getValue(it)) },
-            enabled = true,
-            onSelect = { onCuffLocationChange(it ?: BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN) },
-        )
+    Spacer(Modifier.height(12.dp))
+    OpenVitalsCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(R.string.settings_csv_import_bp_defaults_title),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Spacer(Modifier.height(8.dp))
+            OptionDropdown(
+                label = stringResource(R.string.settings_csv_import_metric_bp_body_position),
+                options = CsvBodyPositionLabelRes.keys.toList(),
+                selected = mapping.defaultBodyPosition.takeIf { it in CsvBodyPositionLabelRes },
+                optionText = { stringResource(CsvBodyPositionLabelRes.getValue(it)) },
+                enabled = true,
+                onSelect = { onBodyPositionChange(it ?: BpRecordValues.BODY_POSITION_UNKNOWN) },
+            )
+            Spacer(Modifier.height(8.dp))
+            OptionDropdown(
+                label = stringResource(R.string.settings_csv_import_metric_bp_cuff_location),
+                options = CsvCuffLocationLabelRes.keys.toList(),
+                selected = mapping.defaultCuffLocation.takeIf { it in CsvCuffLocationLabelRes },
+                optionText = { stringResource(CsvCuffLocationLabelRes.getValue(it)) },
+                enabled = true,
+                onSelect = { onCuffLocationChange(it ?: BpRecordValues.MEASUREMENT_LOCATION_UNKNOWN) },
+            )
+        }
     }
 }
 
