@@ -72,6 +72,7 @@ internal fun csvInterpretationLabel(interpretation: CsvValueInterpretation): Str
             R.string.settings_csv_import_interpretation_mass_share,
             csvUnitLabel(interpretation.unit),
         )
+        is CsvTextValue -> stringResource(R.string.settings_csv_import_interpretation_text)
     }
 
 @Composable
@@ -135,7 +136,6 @@ internal fun csvDiagnosticReasonLabel(reason: CsvImportDiagnosticReason): String
         CsvImportDiagnosticReason.END_NOT_AFTER_START -> R.string.settings_csv_import_reason_end_not_after_start
         CsvImportDiagnosticReason.MISSING_BLOOD_PRESSURE_VALUE -> R.string.settings_csv_import_reason_missing_blood_pressure_value
         CsvImportDiagnosticReason.SYSTOLIC_NOT_ABOVE_DIASTOLIC -> R.string.settings_csv_import_reason_systolic_not_above_diastolic
-        CsvImportDiagnosticReason.UNRECOGNIZED_VALUE -> R.string.settings_csv_import_reason_unrecognized_value
         CsvImportDiagnosticReason.WRITE_FAILED -> R.string.settings_csv_import_reason_write_failed
     },
 )

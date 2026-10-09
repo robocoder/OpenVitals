@@ -270,6 +270,8 @@ class CsvImportFlowTest {
             importService = CsvImportService(
                 AppleHealthImportRepository(hc = manager, dispatchers = DefaultDispatcherProvider),
             ),
+            preferences = CsvImportPreferencesRepository(context),
+            labelSource = CsvBloodPressureLabelSource(context),
             healthRepository = NothingGrantedHealthRepository,
             preferences = CsvImportPreferencesRepository(context),
             labelSource = CsvBloodPressureLabelSource(context),

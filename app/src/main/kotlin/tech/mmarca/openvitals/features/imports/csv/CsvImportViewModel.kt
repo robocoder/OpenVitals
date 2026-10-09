@@ -9,14 +9,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.mmarca.openvitals.data.repository.CsvImportPreferencesRepository
 import tech.mmarca.openvitals.data.repository.contract.HealthRepository
+import tech.mmarca.openvitals.data.repository.CsvImportPreferencesRepository
 import tech.mmarca.openvitals.healthconnect.HealthConnectManager
 
 /** Which step of the importer the screen is showing. */
@@ -67,6 +68,8 @@ data class CsvImportState(
 class CsvImportViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val importService: CsvImportService,
+    private val preferences: CsvImportPreferencesRepository,
+    private val labelSource: CsvBloodPressureLabelSource,
     private val healthRepository: HealthRepository,
     private val preferences: CsvImportPreferencesRepository,
     private val labelSource: CsvBloodPressureLabelSource,

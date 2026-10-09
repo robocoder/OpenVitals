@@ -168,7 +168,7 @@ fun convertCsvRow(
         }
 
         val canonical: Double = when (interpretation) {
-            is CsvCodeValue -> continue
+            is CsvTextValue -> continue
             is CsvDirectValue -> convertCsvValueToCanonical(raw, interpretation.unit)
             is CsvMassShareOfWeight -> {
                 if (rowWeightKg == null || rowWeightKg <= 0) {

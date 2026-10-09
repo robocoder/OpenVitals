@@ -58,13 +58,13 @@ private fun bloodPressureMapping(
             columnIndex = 3,
             role = CsvColumnRole.METRIC,
             metric = CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION,
-            interpretation = CsvCodeValue
+            interpretation = CsvTextValue
         ),
         CsvColumnMapping(
             columnIndex = 4,
             role = CsvColumnRole.METRIC,
             metric = CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION,
-            interpretation = CsvCodeValue
+            interpretation = CsvTextValue
         ),
     ),
     dateTime = CsvDateTimeSettings(

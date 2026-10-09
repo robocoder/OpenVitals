@@ -34,9 +34,6 @@ enum class CsvImportDiagnosticReason {
     /** Systolic is not above diastolic, so the two columns are swapped or wrong. */
     SYSTOLIC_NOT_ABOVE_DIASTOLIC,
 
-    /** A code cell (body or cuff position) matches none of the known options. */
-    UNRECOGNIZED_VALUE,
-
     /** Health Connect refused the record. */
     WRITE_FAILED,
 }

@@ -121,8 +121,8 @@ data class CsvMassShareOfWeight(
     val unit: CsvUnit,
 ) : CsvValueInterpretation
 
-/** The cell holds a code, matched against a fixed list of canonical values. */
-data object CsvCodeValue : CsvValueInterpretation
+/** The cell holds a text value, matched against a fixed list of canonical values. */
+data object CsvTextValue : CsvValueInterpretation
 
 /** Everything the importer needs to know about one metric. */
 data class CsvMetricSpec(
@@ -359,12 +359,12 @@ val CsvMetricCatalog: Map<CsvImportMetric, CsvMetricSpec> = mapOf(
         plausibleMax = 180.0,
     ),
     CsvImportMetric.BLOOD_PRESSURE_BODY_POSITION to bloodPressureSpec(
-        interpretations = listOf(CsvCodeValue),
+        interpretations = listOf(CsvTextValue),
         plausibleMin = 0.0,
         plausibleMax = 0.0,
     ),
     CsvImportMetric.BLOOD_PRESSURE_CUFF_LOCATION to bloodPressureSpec(
-        interpretations = listOf(CsvCodeValue),
+        interpretations = listOf(CsvTextValue),
         plausibleMin = 0.0,
         plausibleMax = 0.0,
     ),

@@ -6,8 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
-import tech.mmarca.openvitals.R
 import tech.mmarca.openvitals.domain.model.BpRecordValues
+import tech.mmarca.openvitals.R
 
 /**
  * What a body position or cuff location cell can say, as normalised label
